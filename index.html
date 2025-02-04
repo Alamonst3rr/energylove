@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="notranslate" translate="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Lully</title>
+    <style>
+        body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Necessário para o pseudo-elemento */
+    overflow: hidden;
+}
+
+/* Camada semi-transparente do plano de fundo */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #9500ff, #0000ff, #01db01);
+    background-size: 300% 300%;
+    animation: gradientAnimation 6s ease infinite;
+    opacity: 0.8; /* Ajuste a opacidade aqui */
+    z-index: -1; /* Mantém a camada atrás de tudo */
+}
+
+/* Animação do gradiente */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+        .star {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: #d400ff;
+        border-radius: 50%;
+        box-shadow:  0 50px #ff00b3;
+        animation: twinkle 2s infinite alternate ease-in-out;
+    }
+@keyframes twinkle {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.3); }
+}
+        .heart-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer; /* Indicates the heart is clickable */
+        }
+
+        .heart {
+            height: 70px;
+            width: 70px;
+            background: #f200ca;
+            position: relative;
+            transform: rotate(-45deg);
+            box-shadow: -10px 10px 90px #f200ca;
+            animation: heart 0.6s linear infinite;
+        }
+
+        @keyframes heart {
+            0% {
+                transform: rotate(-45deg) scale(1);
+            }
+            80% {
+                transform: rotate(-45deg) scale(1.1);
+            }
+            100% {
+                transform: rotate(-45deg) scale(1);
+            }
+        }
+
+        .heart:before {
+            content: '';
+            position: absolute;
+            height: 70px;
+            width: 70px;
+            background: #f200ca;
+            top: -50%;
+            border-radius: 50px;
+            box-shadow: -10px -10px 90px #f200ca;
+        }
+
+        .heart:after {
+            content: '';
+            position: absolute;
+            height: 70px;
+            width: 70px;
+            background: #f200ca;
+            right: -50%;
+            border-radius: 50px;
+            box-shadow: 10px 10px 90px #f200ca;
+        }
+        .heart-image {
+    position: absolute;
+    top: -250px; /* Ajusta a posição acima do coração */
+    left: 50%;
+    transform: translateX(-50%); /* Centraliza */
+    width: 200px; /* Ajuste o tamanho da imagem */
+    height: auto;
+        }
+        .heart-image2 {
+    position: absolute;
+    top: 110px; /* Ajusta a posição acima do coração */
+    left: 50%;
+    transform: translateX(-48%); /* Centraliza */
+    width: 200px; /* Ajuste o tamanho da imagem */
+    height: auto;
+        }
+        .message {
+            position: absolute;
+            bottom: -60px;
+            left: 50%; /* Pushes the message further from the heart */
+            transform: translateX(-50%);
+            background-color: #c200f2;  /* Reddish color like the heart */
+            padding: 12px 50px; /* Less height, more width */
+            border-radius: 8px; /* Makes it rectangular */
+            font-size: 15px;
+            color: #fff;
+            display: none;  /* Initially hidden */
+            max-width: fit-content;
+            box-shadow: -10px -10px 90px #7b0f9c;
+            text-align: center;
+            word-wrap: break-word;
+            white-space: nowrap;
+        }
+
+        .message::before {
+            content: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container" onclick="toggleMessage()">
+        <img src="energia.png" alt="Imagem Decorativa" class="heart-image">
+        <img src="sangue.png" alt="Imagem Decorativa" class="heart-image2">
+        <div class="heart"></div>
+        <div class="star"></div>
+        <div class="message">Ce loko, mó bom namorar contigo</div>
+    </div>
+
+    <script>
+        function toggleMessage() {
+            const messageBox = document.querySelector('.message');
+            messageBox.style.display = messageBox.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+    <script>
+                function createStars() {
+            const numStars = 100; // Número de estrelas
+            const body = document.body;
+            const heartX = window.innerWidth / 2;  // Centro X da tela
+            const heartY = window.innerHeight / 2; // Centro Y da tela
+            const exclusionRadius = 120; // Raio de exclusão ao redor do coração
+    
+            for (let i = 0; i < numStars; i++) {
+                let star = document.createElement("div");
+                star.classList.add("star");
+    
+                let x, y, distance;
+                do {
+                    x = Math.random() * window.innerWidth; // Posição aleatória X
+                    y = Math.random() * window.innerHeight; // Posição aleatória Y
+                    
+                    // Calcula a distância até o coração
+                    distance = Math.sqrt(Math.pow(x - heartX, 2) + Math.pow(y - heartY, 2));
+                } while (distance < exclusionRadius); // Repetir se a estrela estiver muito perto do coração
+    
+                let size = Math.random() * 3 + 1; // Tamanho aleatório entre 1px e 4px
+    
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+    
+                body.appendChild(star);
+            }
+        }
+    
+        createStars();
+    </script>
+</body>
+</html>
+
